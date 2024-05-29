@@ -39,5 +39,12 @@
             <artifactId>spring-web</artifactId>
             <version>5.3.27</version>
         </dependency>
+
+        <!-- ModelMapperUtil依赖此构件 -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 </project>
