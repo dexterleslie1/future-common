@@ -3,7 +3,6 @@ package com.future.common.http;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.future.common.exception.BusinessException;
 import com.future.common.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 public class ResponseUtils {
 
     /**/

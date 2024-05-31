@@ -47,13 +47,6 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- 依赖于lombok某些注解 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
-        </dependency>
-
         <!-- http相关工具需要使用此依赖 -->
         <dependency>
             <groupId>javax.servlet</groupId>
