@@ -1,6 +1,7 @@
 package com.future.common.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.future.common.constant.ErrorCodeConstant;
 import com.future.common.exception.BusinessException;
 import com.future.common.json.JSONUtil;
 
@@ -38,7 +39,7 @@ public class ResponseUtils {
         }
         ObjectResponse<Object> ar = new ObjectResponse<>();
         ar.setData(dataObject);
-        write(response, ar);
+        write(response, HttpServletResponse.SC_OK, ar);
     }
 
     public static String toSuccessJson(Object dataObject) {
@@ -107,12 +108,8 @@ public class ResponseUtils {
      * @param response
      * @param be
      */
-    public static void writeFailResponse(HttpServletResponse response, BusinessException be) {
-        ObjectResponse<Object> objectObjectResponse = new ObjectResponse<>();
-        objectObjectResponse.setErrorCode(be.getErrorCode());
-        objectObjectResponse.setErrorMessage(be.getErrorMessage());
-        objectObjectResponse.setData(be.getData());
-        write(response, objectObjectResponse);
+    public static void writeFailResponse(HttpServletResponse response, int httpStatusCode, BusinessException be) {
+        writeFailResponse(response, httpStatusCode, be.getErrorCode(), be.getErrorMessage(), be.getData());
     }
 
     /**
@@ -122,8 +119,7 @@ public class ResponseUtils {
      * @param errorMessage
      */
     public static void writeFailResponse(HttpServletResponse response, String errorMessage) {
-        BusinessException be = new BusinessException(errorMessage);
-        writeFailResponse(response, be);
+        writeFailResponse(response, HttpServletResponse.SC_BAD_REQUEST, ErrorCodeConstant.ErrorCodeCommon, errorMessage, null);
     }
 
     /**
@@ -134,8 +130,26 @@ public class ResponseUtils {
      * @param errorMessage
      */
     public static void writeFailResponse(HttpServletResponse response, int errorCode, String errorMessage) {
-        BusinessException be = new BusinessException(errorCode, errorMessage);
-        writeFailResponse(response, be);
+        writeFailResponse(response, HttpServletResponse.SC_BAD_REQUEST, errorCode, errorMessage, null);
+    }
+
+    /**
+     * 響應客戶端失敗
+     *
+     * @param response
+     * @param errorCode
+     * @param errorMessage
+     */
+    public static void writeFailResponse(HttpServletResponse response,
+                                         int httpStatusCode,
+                                         int errorCode,
+                                         String errorMessage,
+                                         Object dataObject) {
+        ObjectResponse<Object> objectObjectResponse = new ObjectResponse<>();
+        objectObjectResponse.setErrorCode(errorCode);
+        objectObjectResponse.setErrorMessage(errorMessage);
+        objectObjectResponse.setData(dataObject);
+        write(response, httpStatusCode, objectObjectResponse);
     }
 
     /**
@@ -144,18 +158,18 @@ public class ResponseUtils {
      * @param response
      * @param ar
      */
-    private static void write(HttpServletResponse response, ObjectResponse ar) {
+    private static void write(HttpServletResponse response, int httpStatusCode, ObjectResponse ar) {
         String jsonStr = toJson(ar);
-        write(response, jsonStr);
+        write(response, httpStatusCode, jsonStr);
     }
 
-    private static void write(HttpServletResponse response, BaseResponse baseResponse) {
+    private static void write(HttpServletResponse response, int httpStatusCode, BaseResponse baseResponse) {
         try {
             String JSON = JSONUtil.ObjectMapperInstance.writeValueAsString(baseResponse);
-            write(response, JSON);
+            write(response, httpStatusCode, JSON);
         } catch (JsonProcessingException e) {
             // 这里基本不可能抛出异常
-            write(response, "");
+            write(response, httpStatusCode, "");
         }
     }
 
@@ -163,10 +177,11 @@ public class ResponseUtils {
      * 寫JSON 字符串到響應流
      *
      * @param response
+     * @param httpStatusCode
      * @param jsonString
      */
-    public static void write(HttpServletResponse response, String jsonString) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public static void write(HttpServletResponse response, int httpStatusCode, String jsonString) {
+        response.setStatus(httpStatusCode);
         ServletOutputStream os = null;
         try {
             os = response.getOutputStream();

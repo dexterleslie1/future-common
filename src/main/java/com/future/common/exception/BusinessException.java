@@ -1,6 +1,8 @@
 package com.future.common.exception;
 
 
+import com.future.common.constant.ErrorCodeConstant;
+
 import java.io.IOException;
 
 public class BusinessException extends IOException {
@@ -9,7 +11,7 @@ public class BusinessException extends IOException {
     private Object data;
 
     public BusinessException(String errorMessage) {
-        this(90000, errorMessage);
+        this(ErrorCodeConstant.ErrorCodeCommon, errorMessage);
     }
 
     public BusinessException(int errorCode, String errorMessage) {
