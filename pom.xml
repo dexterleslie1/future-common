@@ -109,6 +109,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- RegexUtil依赖 -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 测试依赖 -->
         <dependency>
             <groupId>junit</groupId>
