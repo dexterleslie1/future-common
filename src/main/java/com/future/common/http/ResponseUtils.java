@@ -90,12 +90,10 @@ public class ResponseUtils {
         return jsonStr;
     }
 
-    public static String toJson(ObjectResponse ar) {
-        HashMap<String, Object> hm = new HashMap<>();
-        hm.put("resp", ar);
+    public static String toJson(ObjectResponse response) {
         String JSON = null;
         try {
-            JSON = JSONUtil.ObjectMapperInstance.writeValueAsString(hm);
+            JSON = JSONUtil.ObjectMapperInstance.writeValueAsString(response);
         } catch (JsonProcessingException e) {
             //
         }
