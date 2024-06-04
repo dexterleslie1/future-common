@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.TimeUnit;
@@ -16,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  * 验证码相关业务
  */
 // todo 代码格式化更加好看
-@Service
 @Slf4j
 public class VerificationCodeService {
     public final static String VerificationCodeKeyPrefix = "vc#";

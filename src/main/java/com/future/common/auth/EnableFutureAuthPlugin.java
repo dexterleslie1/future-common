@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(AuthDataSourceInitConfiguration.class)
+@Import({AuthDataSourceInitConfiguration.class, AuthConfiguration.class})
 public @interface EnableFutureAuthPlugin {
 
 }
