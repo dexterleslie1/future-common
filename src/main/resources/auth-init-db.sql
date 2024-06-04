@@ -1,7 +1,7 @@
 -- 用于初始化 auth 数据库
 
 -- 创建 auth_user 表
-CREATE TABLE `auth_user`
+CREATE TABLE IF NOT EXISTS `auth_user`
 (
     id         BIGINT(20) NOT NULL auto_increment COMMENT '主键ID',
     phone      VARCHAR(64)  NOT NULL COMMENT '手机号码',
