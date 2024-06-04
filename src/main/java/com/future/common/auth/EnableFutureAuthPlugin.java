@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(AuthDataSourceInitConfiguration.class)
-public @interface EnableAuthPlugin {
+public @interface EnableFutureAuthPlugin {
 
 }
