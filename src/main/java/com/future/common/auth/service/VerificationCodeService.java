@@ -1,4 +1,4 @@
-package com.future.common.auth;
+package com.future.common.auth.service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.future.common.exception.BusinessException;
@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 验证码相关业务
  */
 // todo 代码格式化更加好看
+@Service
 @Slf4j
 public class VerificationCodeService {
     public final static String VerificationCodeKeyPrefix = "vc#";
@@ -72,6 +74,7 @@ public class VerificationCodeService {
 
     /**
      * 生成随机验证码，把这个逻辑独立出来是为了测试时候支持此方法的mock
+     *
      * @return
      */
     public String generateRandomCode() {

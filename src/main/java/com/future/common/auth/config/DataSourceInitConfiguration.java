@@ -1,10 +1,11 @@
-package com.future.common.auth;
+package com.future.common.auth.config;
 
+import com.future.common.auth.initializer.AuthDataSourceInitializer;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 
-public class AuthDataSourceInitConfiguration {
+public class DataSourceInitConfiguration {
     /**
      * 创建DataSourceInitializer bean注入到spring容器SQL脚本才会被执行
      *

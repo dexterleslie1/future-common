@@ -1,26 +1,37 @@
-package com.future.common.auth;
+package com.future.common.auth.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.future.common.auth.dto.LoginSuccessDto;
+import com.future.common.auth.dto.UserDto;
+import com.future.common.auth.entity.AuthTokenType;
+import com.future.common.auth.entity.User;
+import com.future.common.auth.mapper.UserMapper;
 import com.future.common.bean.ModelMapperUtil;
 import com.future.common.exception.BusinessException;
 import com.future.common.phone.PhoneUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
-import java.util.UUID;
 
-
+@Service
 @Slf4j
 public class UserService extends ServiceImpl<UserMapper, User> {
     @Autowired
     VerificationCodeService verificationCodeService;
+//    @Autowired
+//    TokenStore tokenStore;
+    @Autowired
+    TokenService tokenService;
 
     /**
      * 用户注册
+     *
      * @param phone
      * @param nickname
      * @param password
@@ -60,12 +71,13 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     /**
      * 用户登录
+     *
      * @param phone
      * @param password
      * @return
      * @throws BusinessException
      */
-    public LoginSuccessDto login(String phone, String password) throws BusinessException {
+    public LoginSuccessDto login(String phone, String password) throws BusinessException, JsonProcessingException {
         Assert.isTrue(!StringUtils.isBlank(phone), "请指定手机号码");
         Assert.isTrue(!StringUtils.isBlank(password), "请指定登录密码");
 
@@ -83,19 +95,26 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             throw new BusinessException("提供的手机号码或者密码错误！");
         }
 
+        // 校验密码通过后分配token
+        Long userId = user.getId();
+        String refreshToken = this.tokenService.assign(userId, AuthTokenType.Refresh);
+        String accessToken = this.tokenService.assign(userId, AuthTokenType.Access);
+
         // todo 使用jwt
         LoginSuccessDto loginSuccessDto = new LoginSuccessDto();
         loginSuccessDto.setUserId(user.getId());
         loginSuccessDto.setPhone(user.getPhone());
-        String refreshToken = UUID.randomUUID().toString();
         loginSuccessDto.setRefreshToken(refreshToken);
-        String accessToken = UUID.randomUUID().toString();
         loginSuccessDto.setAccessToken(accessToken);
+
+//        this.tokenStore.store(accessToken, user);
+
         return loginSuccessDto;
     }
 
     /**
      * 根据id查询个人资料
+     *
      * @param id
      * @return
      * @throws BusinessException

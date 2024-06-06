@@ -1,4 +1,4 @@
-package com.future.common.auth;
+package com.future.common.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,15 +7,13 @@ import lombok.Data;
 
 import java.util.Date;
 
-
 @Data
-@TableName(value = "user", autoResultMap = true)
-public class User {
+@TableName(value = "auth_token", autoResultMap = true)
+public class AuthToken {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String phone;
-    private String nickname;
-    // todo 防止从数据库加载此字段数据
-    private String password;
+    private Long userId;
+    private AuthTokenType type;
+    private String token;
     private Date createTime;
 }

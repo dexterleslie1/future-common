@@ -1,5 +1,6 @@
-package com.future.common.auth;
+package com.future.common.auth.controller;
 
+import com.future.common.auth.service.VerificationCodeService;
 import com.future.common.http.ObjectResponse;
 import com.future.common.http.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // todo swagger
 @RestController
-@RequestMapping(value = "/api/v1/verificationCode")
+@RequestMapping(value = "/api/v1/future/auth/verificationCode")
 @Slf4j
 public class VerificationCodeController {
     @Autowired

@@ -1,5 +1,7 @@
-package com.future.common.auth;
+package com.future.common.auth.controller;
 
+import com.future.common.auth.dto.LoginSuccessDto;
+import com.future.common.auth.service.UserService;
 import com.future.common.exception.BusinessException;
 import com.future.common.http.ObjectResponse;
 import com.future.common.http.ResponseUtils;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/v1/user")
+@RequestMapping(value = "/api/v1/future/auth")
 @Slf4j
 public class RegisterAndLoginController {
     @Autowired
@@ -43,7 +45,7 @@ public class RegisterAndLoginController {
     @PostMapping(value = "login")
     public ObjectResponse<LoginSuccessDto> login(
             @RequestParam(name = "phone", defaultValue = "") String phone,
-            @RequestParam(name = "password", defaultValue = "") String password) throws BusinessException {
+            @RequestParam(name = "password", defaultValue = "") String password) throws Exception {
         return ResponseUtils.successObject(this.userService.login(phone, password));
     }
 }

@@ -1,4 +1,4 @@
-package com.future.common.auth;
+package com.future.common.auth.initializer;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.CompositeDatabasePopulator;

@@ -1,4 +1,4 @@
-package com.future.common.auth;
+package com.future.common.auth.dto;
 
 import lombok.Data;
 

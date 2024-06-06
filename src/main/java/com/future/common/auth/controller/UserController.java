@@ -1,6 +1,9 @@
-package com.future.common.auth;
+package com.future.common.auth.controller;
 
 
+import com.future.common.auth.security.CustomizeAuthentication;
+import com.future.common.auth.dto.UserDto;
+import com.future.common.auth.service.UserService;
 import com.future.common.exception.BusinessException;
 import com.future.common.http.ObjectResponse;
 import com.future.common.http.ResponseUtils;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/v1/user")
+@RequestMapping(value = "/api/v1/future/auth")
 @Slf4j
 public class UserController {
     @Autowired
@@ -23,7 +26,7 @@ public class UserController {
      * @return
      */
     @GetMapping("getInfo")
-    public ObjectResponse<UserDto> getInfo() throws BusinessException {
-        return ResponseUtils.successObject(this.userService.get(0L));
+    public ObjectResponse<UserDto> getInfo(CustomizeAuthentication authentication) throws BusinessException {
+        return ResponseUtils.successObject(this.userService.get(authentication.getUser().getUserId()));
     }
 }
