@@ -4,9 +4,15 @@ import com.future.common.auth.config.FutureAuthProperties;
 import com.future.common.auth.entity.AuthTokenType;
 import com.future.common.auth.entity.User;
 import com.future.common.auth.service.TokenService;
+import com.future.common.constant.ErrorCodeConstant;
+import com.future.common.exception.BusinessException;
+import com.future.common.http.ObjectResponse;
+import com.future.common.http.ResponseUtils;
+import com.future.common.json.JSONUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 // 验证用户是否登录拦截器
 @Component
@@ -42,20 +49,30 @@ public class CustomizeTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        // 获取请求中携带的token并在本地查询是否有此token，
-        // 是，则构造Authentication对象并注入到请求上下文中
-        String token = obtainBearerToken(request);
-        if (!StringUtils.isBlank(token)) {
-            User user = this.tokenService.validate(token, AuthTokenType.Access);
+        try {
+            // 获取请求中携带的token并在本地查询是否有此token，
+            // 是，则构造Authentication对象并注入到请求上下文中
+            String token = obtainBearerToken(request);
+            if (!StringUtils.isBlank(token)) {
+                User user = this.tokenService.validate(token, AuthTokenType.Access);
 
-            if (user != null) {
-                CustomizeUser customizeUser = new CustomizeUser(user.getId());
-                CustomizeAuthentication authentication = new CustomizeAuthentication(customizeUser);
-                authentication.setAuthenticated(true);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (user != null) {
+                    CustomizeUser customizeUser = new CustomizeUser(user.getId());
+                    CustomizeAuthentication authentication = new CustomizeAuthentication(customizeUser);
+                    authentication.setAuthenticated(true);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception ex) {
+            // todo 研究为何一定要使用 catch(Exeption ex)处理，把try catch注释了应用运行不正常了
+            if (ex instanceof BusinessException) {
+                onErrorResponse(request, response, ((BusinessException) ex).getErrorCode(), ((BusinessException) ex).getErrorMessage());
+            } else {
+                logger.error(ex.getMessage(), ex);
+                onErrorResponse(request, response, ErrorCodeConstant.ErrorCodeCommon, "网络繁忙，稍后重试！");
             }
         }
-        filterChain.doFilter(request, response);
     }
 
     String obtainBearerToken(HttpServletRequest request) {
@@ -65,5 +82,16 @@ public class CustomizeTokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return bearerStr.replace("Bearer ", "");
+    }
+
+    void onErrorResponse(HttpServletRequest request,
+                         HttpServletResponse response,
+                         int errorCode,
+                         String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        ObjectResponse<String> responseO = ResponseUtils.failObject(errorCode, message);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.getWriter().write(JSONUtil.ObjectMapperInstance.writeValueAsString(responseO));
     }
 }

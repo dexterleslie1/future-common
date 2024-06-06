@@ -1,6 +1,7 @@
 package com.future.common.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -16,4 +17,10 @@ public class AuthToken {
     private AuthTokenType type;
     private String token;
     private Date createTime;
+
+    /**
+     * token是否过期
+     */
+    @TableField(exist = false)
+    private boolean expired;
 }
