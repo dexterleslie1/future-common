@@ -60,8 +60,12 @@ public class ConfigFutureAuthWebSecurity extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 // 权限不足时处理
                 .accessDeniedHandler(accessDeniedHandler())
-                // 未登录时处理
-                .authenticationEntryPoint(authenticationEntryPoint());
+                // 未登录时处理，即SecurityContextHolder中不存在Authentication对象时
+                .authenticationEntryPoint(authenticationEntryPoint())
+                // 禁用logout设置
+                .and().logout().disable()
+                // 禁用formlogin设置
+                .formLogin().disable();
     }
 
     AccessDeniedHandler accessDeniedHandler() {

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 
 @Service
@@ -24,8 +26,6 @@ import java.util.Date;
 public class UserService extends ServiceImpl<UserMapper, User> {
     @Autowired
     VerificationCodeService verificationCodeService;
-//    @Autowired
-//    TokenStore tokenStore;
     @Autowired
     TokenService tokenService;
 
@@ -77,7 +77,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @return
      * @throws BusinessException
      */
-    public LoginSuccessDto login(String phone, String password) throws BusinessException, JsonProcessingException {
+    public LoginSuccessDto login(String phone, String password) throws BusinessException, JsonProcessingException, NoSuchAlgorithmException, InvalidKeySpecException {
         Assert.isTrue(!StringUtils.isBlank(phone), "请指定手机号码");
         Assert.isTrue(!StringUtils.isBlank(password), "请指定登录密码");
 
@@ -97,17 +97,15 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
         // 校验密码通过后分配token
         Long userId = user.getId();
+
         String refreshToken = this.tokenService.assign(userId, AuthTokenType.Refresh);
         String accessToken = this.tokenService.assign(userId, AuthTokenType.Access);
 
-        // todo 使用jwt
         LoginSuccessDto loginSuccessDto = new LoginSuccessDto();
         loginSuccessDto.setUserId(user.getId());
         loginSuccessDto.setPhone(user.getPhone());
         loginSuccessDto.setRefreshToken(refreshToken);
         loginSuccessDto.setAccessToken(accessToken);
-
-//        this.tokenStore.store(accessToken, user);
 
         return loginSuccessDto;
     }

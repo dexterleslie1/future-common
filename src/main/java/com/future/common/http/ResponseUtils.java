@@ -135,6 +135,18 @@ public class ResponseUtils {
      * 響應客戶端失敗
      *
      * @param response
+     * @param statusCode
+     * @param errorCode
+     * @param errorMessage
+     */
+    public static void writeFailResponse(HttpServletResponse response, int statusCode, int errorCode, String errorMessage) {
+        writeFailResponse(response, statusCode, errorCode, errorMessage, null);
+    }
+
+    /**
+     * 響應客戶端失敗
+     *
+     * @param response
      * @param errorCode
      * @param errorMessage
      */

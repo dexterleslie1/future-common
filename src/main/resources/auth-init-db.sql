@@ -20,13 +20,3 @@ create table if not exists `auth_token`
     token   varchar(64) not null comment 'token的值',
     createTime datetime not null comment '创建时间'
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 collate=utf8mb4_general_ci;
-
--- 创建历史token表，用于记录用户的历史token
-/*create table if not exists `auth_token_assign_history`
-(
-    id  bigint(20) not null primary key auto_increment comment '主键',
-    userId  bigint(20) not null comment '用户id',
-    `type`  varchar(16) not null comment 'token类型：refresh和access token',
-    token   varchar(64) not null comment 'token的值',
-    createTime datetime not null comment '创建时间'
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 collate=utf8mb4_general_ci;*/

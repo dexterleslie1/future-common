@@ -27,8 +27,6 @@ import java.nio.charset.StandardCharsets;
 // 验证用户是否登录拦截器
 @Component
 public class CustomizeTokenAuthenticationFilter extends OncePerRequestFilter {
-    //    @Autowired
-//    TokenStore tokenStore;
     @Autowired
     TokenService tokenService;
     @Autowired

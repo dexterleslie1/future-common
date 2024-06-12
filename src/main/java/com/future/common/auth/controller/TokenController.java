@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 @RestController
 @RequestMapping(value = "/api/v1/future/auth")
 @Slf4j
@@ -22,7 +25,7 @@ public class TokenController {
      * @return
      */
     @PostMapping("refreshAccessToken")
-    public ObjectResponse<String> refreshAccessToken(@RequestParam(value = "refreshToken", defaultValue = "") String refreshToken) throws BusinessException {
+    public ObjectResponse<String> refreshAccessToken(@RequestParam(value = "refreshToken", defaultValue = "") String refreshToken) throws BusinessException, NoSuchAlgorithmException, InvalidKeySpecException {
         return ResponseUtils.successObject(this.tokenService.refreshAccessToken(refreshToken));
     }
 }
