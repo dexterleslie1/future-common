@@ -189,6 +189,21 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
+
+        <!-- JwtUtil依赖 -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.15.0</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
