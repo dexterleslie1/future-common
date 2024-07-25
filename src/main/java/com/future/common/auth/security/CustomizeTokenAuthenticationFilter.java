@@ -88,7 +88,7 @@ public class CustomizeTokenAuthenticationFilter extends OncePerRequestFilter {
                          String message) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ObjectResponse<String> responseO = ResponseUtils.failObject(errorCode, message);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(JSONUtil.ObjectMapperInstance.writeValueAsString(responseO));
     }

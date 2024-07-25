@@ -86,7 +86,7 @@ public class ExceptionController {
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
         response.setErrorMessage(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -100,7 +100,7 @@ public class ExceptionController {
             log.debug("参数校验失败，缺失必要的参数，message={}", message);
 
         response.setErrorMessage(message);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -114,7 +114,7 @@ public class ExceptionController {
             log.debug("参数类型不匹配导致转换失败，message={}", message);
 
         response.setErrorMessage(message);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     /**
@@ -128,7 +128,7 @@ public class ExceptionController {
         response.setErrorCode(e.getErrorCode());
         response.setErrorMessage(e.getMessage());
         response.setData(e.getData());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     /**
@@ -158,7 +158,7 @@ public class ExceptionController {
         String message = this.messageSource.getMessage("common.resource.not.found", new String[]{e.getRequestURL()}, locale);
         response.setErrorMessage(message);
         response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     /**
@@ -261,7 +261,7 @@ public class ExceptionController {
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorCode(errorCode);
         response.setErrorMessage(errorMessage);
-        return ResponseEntity.status(httpStatus).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(httpStatus).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 
     // 文件上传大小超过服务器限制异常处理
@@ -287,6 +287,6 @@ public class ExceptionController {
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorMessage(message);
         response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
     }
 }
