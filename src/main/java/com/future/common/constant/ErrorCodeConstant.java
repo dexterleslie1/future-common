@@ -39,4 +39,8 @@ public class ErrorCodeConstant {
      * 刷新token间隔小于最小值
      */
     public final static int ErrorCodeLessThanMinimumRefreshInterval = 90004;
+    /**
+     * java validation失败代码
+     */
+    public final static int ErrorCodeConstraintViolation = 90008;
 }
