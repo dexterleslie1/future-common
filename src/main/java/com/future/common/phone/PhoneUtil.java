@@ -10,10 +10,26 @@ public class PhoneUtil {
 
     /**
      * 判断号码格式是否正确
+     *
+     * @param phone
+     * @return
+     */
+    public static boolean isValid(String phone) {
+        try {
+            isPhone(phone);
+            return true;
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断号码格式是否正确
+     *
      * @param phone
      */
     public static void isPhone(String phone) {
-        if(StringUtils.isBlank(phone)) {
+        if (StringUtils.isBlank(phone)) {
             throw new IllegalArgumentException("没有指定号码");
         }
 
@@ -29,18 +45,19 @@ public class PhoneUtil {
 
     /**
      * 判断号码是否移动类型号码
+     *
      * @param phone
      * @return
      */
     public static void isMobile(String phone) {
-        if(StringUtils.isBlank(phone)) {
+        if (StringUtils.isBlank(phone)) {
             throw new IllegalArgumentException("没有指定号码");
         }
 
         try {
             Phonenumber.PhoneNumber phoneNumber = PhoneNumberUtilInstance.parse(phone, null);
             PhoneNumberUtil.PhoneNumberType phoneNumberType = PhoneNumberUtilInstance.getNumberType(phoneNumber);
-            if(PhoneNumberUtil.PhoneNumberType.MOBILE!=phoneNumberType) {
+            if (PhoneNumberUtil.PhoneNumberType.MOBILE != phoneNumberType) {
                 String message = String.format("号码=%s非手机类型号码", phone);
                 throw new IllegalArgumentException(message);
             }
@@ -53,11 +70,12 @@ public class PhoneUtil {
 
     /**
      * 获取号码countryCode
+     *
      * @param phone
      * @return
      */
     public static int getCountryCode(String phone) {
-        if(StringUtils.isBlank(phone)) {
+        if (StringUtils.isBlank(phone)) {
             throw new IllegalArgumentException("没有指定号码");
         }
 
