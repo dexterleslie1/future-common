@@ -37,6 +37,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -288,5 +289,19 @@ public class ExceptionController {
         response.setErrorMessage(message);
         response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8).body(response);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public @ResponseBody
+    ResponseEntity<ObjectResponse<String>> handleConstraintViolationException(ConstraintViolationException e) {
+        ObjectResponse<String> response = new ObjectResponse<>();
+        response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
+        String message = e.getConstraintViolations().iterator().next().getMessage();
+
+        if(log.isDebugEnabled())
+            log.debug("参数校验失败，message={}", message);
+
+        response.setErrorMessage(message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
     }
 }
