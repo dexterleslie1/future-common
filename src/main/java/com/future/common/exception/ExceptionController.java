@@ -216,7 +216,9 @@ public class ExceptionController {
 
         int errorCode = ErrorCodeConstant.ErrorCodeCommon;
         String errorMessage;
-        int httpStatus = HttpStatus.OK.value();
+        // 意料之外的异常需要返回 http 500 错误代码
+        // 场景：Prometheus 监控 OpenResty 时，服务器意料之外的异常响应 http 500 有助于及时发现服务异常情况
+        int httpStatus = HttpStatus.INTERNAL_SERVER_ERROR.value();
         if (e instanceof ResourceAccessException) {
             errorMessage = this.messageSource.getMessage("common.server.busy.retry.later", null, LocaleContextHolder.getLocale());
         } else if (e instanceof FeignException) {
