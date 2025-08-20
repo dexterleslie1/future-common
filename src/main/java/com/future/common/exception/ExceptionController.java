@@ -84,6 +84,11 @@ public class ExceptionController {
         if(log.isDebugEnabled())
             log.debug("参数校验失败，message={}", e.getMessage());
 
+        // NumberFormatException 异常堆栈需要打印
+        if(e instanceof NumberFormatException) {
+            log.error(e.getMessage(), e);
+        }
+
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorCode(ErrorCodeConstant.ErrorCodeCommon);
         response.setErrorMessage(e.getMessage());
